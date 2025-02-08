@@ -25,15 +25,48 @@ This work presents **Video Depth Anything** based on [Depth Anything V2](https:/
 - **2025-01-21:** Paper, project page, code, models, and demo are all released.
 
 
+## Release Notes
+- **2025-02-08:** 🚀🚀🚀 Inference speed and memory usage improvement
+  <table>
+    <thead>
+      <tr>
+        <th rowspan="2" style="text-align: center;">Model</th>
+        <th colspan="2">Latency (ms)</th>
+        <th colspan="2">GPU VRAM (GB)</th>
+      </tr>
+      <tr>
+        <th>FP32</th>
+        <th>FP16</th>
+        <th>FP32</th>
+        <th>FP16</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Video-Depth-Anything-V2-Small</td>
+        <td>9.1</td>
+        <td><strong>7.5</strong></td>
+        <td>7.3</td>
+        <td><strong>6.8</strong></td>
+      </tr>
+      <tr>
+        <td>Video-Depth-Anything-V2-Large</td>
+        <td>67</td>
+        <td><strong>14</strong></td>
+        <td>26.7</td>
+        <td><strong>23.6</strong></td>
+    </tbody>
+  </table>
+
+  The Latency and GPU VRAM results are obtained on a single A100 GPU with input of shape 1 x 32 x 518 × 518.
+
 ## Pre-trained Models
 We provide **two models** of varying scales for robust and consistent video depth estimation:
 
-| Model | Params | Checkpoint | Latency (ms) | GPU VRAM (GB) |
-|:-|:-:|:-:|:-:|:-:|
-| Video-Depth-Anything-V2-Small | 28.4M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Small/resolve/main/video_depth_anything_vits.pth?download=true) | 9.1(fp32)<br>7.5(fp16) | 7.3(fp32)<br>6.8(fp16) |
-| Video-Depth-Anything-V2-Large | 381.8M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Large/resolve/main/video_depth_anything_vitl.pth?download=true) | 67(fp32)<br>14(fp16) | 26.7(fp32)<br>23.6(fp16) |
-
-The Latency and GPU VRAM results are obtained on a single A100 GPU with input of shape 1 x 32 x 518 × 518.
+| Model | Params | Checkpoint |
+|:-|-:|:-:|
+| Video-Depth-Anything-V2-Small | 28.4M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Small/resolve/main/video_depth_anything_vits.pth?download=true) |
+| Video-Depth-Anything-V2-Large | 381.8M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Large/resolve/main/video_depth_anything_vitl.pth?download=true) |
 
 ## Usage
 
