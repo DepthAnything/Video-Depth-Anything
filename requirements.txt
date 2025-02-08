@@ -11,3 +11,4 @@ xformers
 einops
 easydict
 tqdm
+OpenEXR==3.3.1

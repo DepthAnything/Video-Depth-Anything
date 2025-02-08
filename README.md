@@ -21,6 +21,7 @@ This work presents **Video Depth Anything** based on [Depth Anything V2](https:/
 ![teaser](assets/teaser_video_v2.png)
 
 ## News
+- **2025-02-08:** Enable autocast inference. Support grayscale video, NPZ and EXR output formats.
 - **2025-01-21:** Paper, project page, code, models, and demo are all released.
 
 
