@@ -91,6 +91,8 @@ class DPTHeadTemporal(DPTHead):
         out = F.interpolate(
             out, (int(patch_h * 14), int(patch_w * 14)), mode="bilinear", align_corners=True
         )
-        out = self.scratch.output_conv2(out)
+        ori_type = out.dtype
+        with torch.autocast(device_type="cuda", enabled=False):
+            out = self.scratch.output_conv2(out.float())
 
-        return out
+        return out.to(ori_type)
