@@ -30,6 +30,8 @@ if __name__ == '__main__':
     parser.add_argument('--target_fps', type=int, default=-1, help='target fps of the input video, -1 means the original fps')
     parser.add_argument('--fp32', action='store_true', help='model infer with torch.float32, default is torch.float16')
     parser.add_argument('--grayscale', action='store_true', help='do not apply colorful palette')
+    parser.add_argument('--save_npz', action='store_true', help='save depths as npz')
+    parser.add_argument('--save_exr', action='store_true', help='save depths as exr')
 
     args = parser.parse_args()
 
@@ -55,6 +57,24 @@ if __name__ == '__main__':
     depth_vis_path = os.path.join(args.output_dir, os.path.splitext(video_name)[0]+'_vis.mp4')
     save_video(frames, processed_video_path, fps=fps)
     save_video(depths, depth_vis_path, fps=fps, is_depths=True, grayscale=args.grayscale)
+
+    if args.save_npz:
+        depth_npz_path = os.path.join(args.output_dir, os.path.splitext(video_name)[0]+'_depths.npz')
+        np.savez_compressed(depth_npz_path, depths=depths)
+    if args.save_exr:
+        depth_exr_dir = os.path.join(args.output_dir, os.path.splitext(video_name)[0]+'_depths_exr')
+        os.makedirs(depth_exr_dir, exist_ok=True)
+        import OpenEXR
+        import Imath
+        for i, depth in enumerate(depths):
+            output_exr = f"{depth_exr_dir}/frame_{i:05d}.exr"
+            header = OpenEXR.Header(depth.shape[1], depth.shape[0])
+            header["channels"] = {
+                "Z": Imath.Channel(Imath.PixelType(Imath.PixelType.FLOAT))
+            }
+            exr_file = OpenEXR.OutputFile(output_exr, header)
+            exr_file.writePixels({"Z": depth.tobytes()})
+            exr_file.close()
 
     
 
