@@ -28,11 +28,12 @@ This work presents **Video Depth Anything** based on [Depth Anything V2](https:/
 ## Pre-trained Models
 We provide **two models** of varying scales for robust and consistent video depth estimation:
 
-| Model | Params | Checkpoint |
-|:-|-:|:-:|
-| Video-Depth-Anything-V2-Small | 28.4M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Small/resolve/main/video_depth_anything_vits.pth?download=true) |
-| Video-Depth-Anything-V2-Large | 381.8M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Large/resolve/main/video_depth_anything_vitl.pth?download=true) |
+| Model | Params | Checkpoint | Latency (ms) | GPU VRAM (GB) |
+|:-|:-:|:-:|:-:|:-:|
+| Video-Depth-Anything-V2-Small | 28.4M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Small/resolve/main/video_depth_anything_vits.pth?download=true) | 9.1(fp32), 7.5(fp16) | 7.3(fp32), 6.8(fp16) |
+| Video-Depth-Anything-V2-Large | 381.8M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Large/resolve/main/video_depth_anything_vitl.pth?download=true) | 67(fp32), 14(fp16) | 26.7(fp32), 23.6(fp16) |
 
+The Latency and GPU VRAM results are obtained on a single A100 GPU with input of shape 1 x 32 x 518 × 518.
 
 ## Usage
 
@@ -53,6 +54,19 @@ bash get_weights.sh
 ```bash
 python3 run.py --input_video ./assets/example_videos/davis_rollercoaster.mp4 --output_dir ./outputs --encoder vitl
 ```
+
+Options:
+- `--input_video`: path of input video
+- `--output_dir`: path to save the output results
+- `--input_size` (optional): By default, we use input size `518` for model inference.
+- `--max_res` (optional): By default, we use maximum resolution `1280` for model inference.
+- `--encoder` (optional): `vits` for Video-Depth-Anything-V2-Small, `vitl` for Video-Depth-Anything-V2-Large.
+- `--max_len` (optional): maximum length of the input video, `-1` means no limit
+- `--target_fps` (optional): target fps of the input video, `-1` means the original fps
+- `--fp32` (optional): Use `fp32` precision for inference. By default, we use `fp16`.
+- `--grayscale` (optional): Save the grayscale depth map, without applying color palette.
+- `--save_npz` (optional): Save the depth map in `npz` format.
+- `--save_exr` (optional): Save the depth map in `exr` format.
 
 ## Citation
 
