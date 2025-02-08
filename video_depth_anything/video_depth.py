@@ -64,7 +64,7 @@ class VideoDepthAnything(nn.Module):
         depth = F.relu(depth)
         return depth.squeeze(1).unflatten(0, (B, T)) # return shape [B, T, H, W]
     
-    def infer_video_depth(self, frames, target_fps, input_size=518, device='cuda'):
+    def infer_video_depth(self, frames, target_fps, input_size=518, device='cuda', fp32=False):
         frame_height, frame_width = frames[0].shape[:2]
         ratio = max(frame_height, frame_width) / min(frame_height, frame_width)
         if ratio > 1.78:  # we recommend to process video with ratio smaller than 16:9 due to memory limitation
@@ -102,7 +102,7 @@ class VideoDepthAnything(nn.Module):
                 cur_input[:, :OVERLAP, ...] = pre_input[:, KEYFRAMES, ...]
 
             with torch.no_grad():
-                with torch.autocast(device_type=device, enabled=True):
+                with torch.autocast(device_type=device, enabled=(not fp32)):
                     depth = self.forward(cur_input) # depth shape: [1, T, H, W]
 
             depth = depth.to(cur_input.dtype)
