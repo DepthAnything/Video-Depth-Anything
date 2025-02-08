@@ -30,8 +30,8 @@ We provide **two models** of varying scales for robust and consistent video dept
 
 | Model | Params | Checkpoint | Latency (ms) | GPU VRAM (GB) |
 |:-|:-:|:-:|:-:|:-:|
-| Video-Depth-Anything-V2-Small | 28.4M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Small/resolve/main/video_depth_anything_vits.pth?download=true) | 9.1(fp32), 7.5(fp16) | 7.3(fp32), 6.8(fp16) |
-| Video-Depth-Anything-V2-Large | 381.8M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Large/resolve/main/video_depth_anything_vitl.pth?download=true) | 67(fp32), 14(fp16) | 26.7(fp32), 23.6(fp16) |
+| Video-Depth-Anything-V2-Small | 28.4M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Small/resolve/main/video_depth_anything_vits.pth?download=true) | 9.1(fp32)<br>7.5(fp16) | 7.3(fp32)<br>6.8(fp16) |
+| Video-Depth-Anything-V2-Large | 381.8M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Large/resolve/main/video_depth_anything_vitl.pth?download=true) | 67(fp32)<br>14(fp16) | 26.7(fp32)<br>23.6(fp16) |
 
 The Latency and GPU VRAM results are obtained on a single A100 GPU with input of shape 1 x 32 x 518 × 518.
 
