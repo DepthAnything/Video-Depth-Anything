@@ -69,6 +69,7 @@ We provide **two models** of varying scales for robust and consistent video dept
 | Video-Depth-Anything-V2-Large | 381.8M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Large/resolve/main/video_depth_anything_vitl.pth?download=true) |
 
 ## Usage
+Requires Python>3.9
 
 ### Preparation
 
