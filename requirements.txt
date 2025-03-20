@@ -1,10 +1,10 @@
-numpy==1.23.1
+numpy==1.24.0
 torch==2.1.1
 torchvision==0.16.1
 opencv-python
 matplotlib
 pillow
-imageio==2.19.3
+imageio==2.37.0
 imageio-ffmpeg==0.4.7
 decord
 xformers==0.0.23
