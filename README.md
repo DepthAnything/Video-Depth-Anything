@@ -76,6 +76,7 @@ We provide **two models** of varying scales for robust and consistent video dept
 
 
 ## Usage
+Requires Python>3.9
 
 ### Preparation
 
