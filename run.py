@@ -15,6 +15,7 @@ import argparse
 import numpy as np
 import os
 import torch
+import time
 
 from video_depth_anything.video_depth import VideoDepthAnything
 from utils.dc_utils import read_video_frames, save_video
@@ -42,13 +43,26 @@ if __name__ == '__main__':
         'vitl': {'encoder': 'vitl', 'features': 256, 'out_channels': [256, 512, 1024, 1024]},
     }
 
+    start_time = time.time()
+    
+    # Model loading
     video_depth_anything = VideoDepthAnything(**model_configs[args.encoder])
     video_depth_anything.load_state_dict(torch.load(f'./checkpoints/video_depth_anything_{args.encoder}.pth', map_location='cpu'), strict=True)
     video_depth_anything = video_depth_anything.to(DEVICE).eval()
+    model_load_time = time.time() - start_time
 
+    # Video reading
+    read_start = time.time()
     frames, target_fps = read_video_frames(args.input_video, args.max_len, args.target_fps, args.max_res)
+    read_time = time.time() - read_start
+
+    # Depth inference
+    inference_start = time.time()
     depths, fps = video_depth_anything.infer_video_depth(frames, target_fps, input_size=args.input_size, device=DEVICE, fp32=args.fp32)
+    inference_time = time.time() - inference_start
     
+    # Video saving
+    save_start = time.time()
     video_name = os.path.basename(args.input_video)
     if not os.path.exists(args.output_dir):
         os.makedirs(args.output_dir)
@@ -57,7 +71,10 @@ if __name__ == '__main__':
     depth_vis_path = os.path.join(args.output_dir, os.path.splitext(video_name)[0]+'_vis.mp4')
     save_video(frames, processed_video_path, fps=fps)
     save_video(depths, depth_vis_path, fps=fps, is_depths=True, grayscale=args.grayscale)
+    save_time = time.time() - save_start
 
+    # Optional saving of additional formats
+    extra_save_start = time.time()
     if args.save_npz:
         depth_npz_path = os.path.join(args.output_dir, os.path.splitext(video_name)[0]+'_depths.npz')
         np.savez_compressed(depth_npz_path, depths=depths)
@@ -75,6 +92,25 @@ if __name__ == '__main__':
             exr_file = OpenEXR.OutputFile(output_exr, header)
             exr_file.writePixels({"Z": depth.tobytes()})
             exr_file.close()
+    extra_save_time = time.time() - extra_save_start
+
+    total_time = time.time() - start_time
+    
+    # Print timing information
+    print("\nProcessing Time Breakdown:")
+    print(f"Model Loading: {model_load_time:.2f}s")
+    print(f"Video Reading: {read_time:.2f}s")
+    print(f"Depth Inference: {inference_time:.2f}s")
+    print(f"Video Saving: {save_time:.2f}s")
+    if args.save_npz or args.save_exr:
+        print(f"Additional Format Saving: {extra_save_time:.2f}s")
+    print(f"Total Time: {total_time:.2f}s")
+    
+    # Print per-frame statistics
+    num_frames = len(frames)
+    print(f"\nPer-frame Statistics:")
+    print(f"Number of Frames: {num_frames}")
+    print(f"Average Processing Time per Frame: {inference_time/num_frames:.3f}s ({(num_frames/inference_time):.1f} FPS)")
 
     
 
