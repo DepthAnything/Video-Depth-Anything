@@ -149,4 +149,4 @@ def construct_demo():
 if __name__ == "__main__":
     demo = construct_demo()
     demo.queue()
-    demo.launch(server_name="0.0.0.0")
+    demo.launch()
