@@ -67,7 +67,7 @@ This work presents **Video Depth Anything** based on [Depth Anything V2](https:/
   The Latency and GPU VRAM results are obtained on a single A100 GPU with input of shape 1 x 32 x 518 × 518.
 
 ## Pre-trained Models
-We provide **two models** of varying scales for robust and consistent video depth estimation:
+We provide **sevaral models** of varying scales for robust and consistent video depth estimation. For the usage of metric depth models, please refer to [Metric Depth](./metric_depth/README.md).
 
 | Model | Params | Checkpoint |
 |:-|-:|:-:|
