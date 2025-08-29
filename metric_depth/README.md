@@ -6,9 +6,9 @@ We provide three models for metric video depth estimation:
 
 | Base Model | Params | Checkpoint |
 |:-|-:|:-:|
-| Metric-Video-Depth-Anything-V2-Small | 28.4M | [Download](https://huggingface.co/depth-anything/Metric-Video-Depth-Anything-Small/blob/main/metric_video_depth_anything_vits.pth) |
-| Metric-Video-Depth-Anything-V2-Base | 113.1M | [Download](https://huggingface.co/depth-anything/Metric-Video-Depth-Anything-Base/blob/main/metric_video_depth_anything_vitb.pth) |
-| Metric-Video-Depth-Anything-V2-Large | 381.8M | [Download](https://huggingface.co/depth-anything/Metric-Video-Depth-Anything-Large/resolve/main/metric_video_depth_anything_vitl.pth) |
+| Metric-Video-Depth-Anything-Small | 28.4M | [Download](https://huggingface.co/depth-anything/Metric-Video-Depth-Anything-Small/blob/main/metric_video_depth_anything_vits.pth) |
+| Metric-Video-Depth-Anything-Base | 113.1M | [Download](https://huggingface.co/depth-anything/Metric-Video-Depth-Anything-Base/blob/main/metric_video_depth_anything_vitb.pth) |
+| Metric-Video-Depth-Anything-Large | 381.8M | [Download](https://huggingface.co/depth-anything/Metric-Video-Depth-Anything-Large/resolve/main/metric_video_depth_anything_vitl.pth) |
 
 # Metric depth evaluation
 We evaluate our models for video metric depth without aligning the scale. The evaluation results are as follows.
@@ -33,7 +33,8 @@ Download the checkpoints and put them under the `metric_depth/checkpoints` direc
 cd metric_depth
 python3 run.py \
     --input_video <YOUR_VIDEO_PATH> \
-    --output_dir <YOUR_OUTPUT_DIR>
+    --output_dir <YOUR_OUTPUT_DIR> \
+    --encoder vitl
 ```
 ### Project video to point clouds
 ```bash
