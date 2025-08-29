@@ -49,14 +49,14 @@ This work presents **Video Depth Anything** based on [Depth Anything V2](https:/
     </thead>
     <tbody>
       <tr>
-        <td>Video-Depth-Anything-V2-Small</td>
+        <td>Video-Depth-Anything-Small</td>
         <td>9.1</td>
         <td><strong>7.5</strong></td>
         <td>7.3</td>
         <td><strong>6.8</strong></td>
       </tr>
       <tr>
-        <td>Video-Depth-Anything-V2-Large</td>
+        <td>Video-Depth-Anything-Large</td>
         <td>67</td>
         <td><strong>14</strong></td>
         <td>26.7</td>
@@ -71,12 +71,12 @@ We provide **two models** of varying scales for robust and consistent video dept
 
 | Model | Params | Checkpoint |
 |:-|-:|:-:|
-| Video-Depth-Anything-V2-Small | 28.4M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Small/resolve/main/video_depth_anything_vits.pth?download=true) |
-| Video-Depth-Anything-V2-Base | 113.1M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Base/blob/main/video_depth_anything_vitb.pth) | 
-| Video-Depth-Anything-V2-Large | 381.8M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Large/resolve/main/video_depth_anything_vitl.pth?download=true) |
-| Metric-Video-Depth-Anything-V2-Small | 28.4M | [Download](https://huggingface.co/depth-anything/Metric-Video-Depth-Anything-Small/blob/main/metric_video_depth_anything_vits.pth) |
-| Metric-Video-Depth-Anything-V2-Base | 113.1M | [Download](https://huggingface.co/depth-anything/Metric-Video-Depth-Anything-Base/blob/main/metric_video_depth_anything_vitb.pth) |
-| Metric-Video-Depth-Anything-V2-Large | 381.8M | [Download](https://huggingface.co/depth-anything/Metric-Video-Depth-Anything-Large/resolve/main/metric_video_depth_anything_vitl.pth) |
+| Video-Depth-Anything-Small | 28.4M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Small/resolve/main/video_depth_anything_vits.pth?download=true) |
+| Video-Depth-Anything-Base | 113.1M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Base/blob/main/video_depth_anything_vitb.pth) | 
+| Video-Depth-Anything-Large | 381.8M | [Download](https://huggingface.co/depth-anything/Video-Depth-Anything-Large/resolve/main/video_depth_anything_vitl.pth?download=true) |
+| Metric-Video-Depth-Anything-Small | 28.4M | [Download](https://huggingface.co/depth-anything/Metric-Video-Depth-Anything-Small/blob/main/metric_video_depth_anything_vits.pth) |
+| Metric-Video-Depth-Anything-Base | 113.1M | [Download](https://huggingface.co/depth-anything/Metric-Video-Depth-Anything-Base/blob/main/metric_video_depth_anything_vitb.pth) |
+| Metric-Video-Depth-Anything-Large | 381.8M | [Download](https://huggingface.co/depth-anything/Metric-Video-Depth-Anything-Large/resolve/main/metric_video_depth_anything_vitl.pth) |
 
 
 ## Usage
@@ -104,7 +104,7 @@ Options:
 - `--output_dir`: path to save the output results
 - `--input_size` (optional): By default, we use input size `518` for model inference.
 - `--max_res` (optional): By default, we use maximum resolution `1280` for model inference.
-- `--encoder` (optional): `vits` for Video-Depth-Anything-V2-Small, `vitl` for Video-Depth-Anything-V2-Large.
+- `--encoder` (optional): `vits` for Video-Depth-Anything-Small, `vitb` for Video-Depth-Anything-Base, `vitl` for Video-Depth-Anything-Large.
 - `--max_len` (optional): maximum length of the input video, `-1` means no limit
 - `--target_fps` (optional): target fps of the input video, `-1` means the original fps
 - `--fp32` (optional): Use `fp32` precision for inference. By default, we use `fp16`.
@@ -124,7 +124,7 @@ Options:
 - `--output_dir`: path to save the output results
 - `--input_size` (optional): By default, we use input size `518` for model inference.
 - `--max_res` (optional): By default, we use maximum resolution `1280` for model inference.
-- `--encoder` (optional): `vits` for Video-Depth-Anything-V2-Small, `vitl` for Video-Depth-Anything-V2-Large.
+- `--encoder` (optional): `vits` for Video-Depth-Anything-Small, `vitb` for Video-Depth-Anything-Base, `vitl` for Video-Depth-Anything-Large.
 - `--max_len` (optional): maximum length of the input video, `-1` means no limit
 - `--target_fps` (optional): target fps of the input video, `-1` means the original fps
 - `--fp32` (optional): Use `fp32` precision for inference. By default, we use `fp16`.
