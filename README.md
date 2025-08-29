@@ -80,6 +80,7 @@ We provide **sevaral models** of varying scales for robust and consistent video 
 
 
 ## Usage
+Requires Python>3.9
 
 ### Preparation
 
