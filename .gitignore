@@ -1,7 +1,59 @@
+# IDE
 .vscode/
-outputs
-checkpoints
-__pycache__
-*/__pycache__
-*.pyc
+.idea/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+virtualenv/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+*.cover
+.hypothesis/
+.tox/
+nosetests.xml
+
+# Build artifacts
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Project specific
+outputs/
+checkpoints/
 gradio*
+*.log
+*.tmp
+
+# Claude settings
+.claude/*
+
+# Package manager
+poetry.lock
