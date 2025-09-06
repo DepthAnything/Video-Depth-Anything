@@ -94,7 +94,7 @@ Download the checkpoints listed [here](#pre-trained-models) and put them under t
 bash get_weights.sh
 ```
 
-### Inference a video
+### Run inference on a video
 ```bash
 python3 run.py --input_video ./assets/example_videos/davis_rollercoaster.mp4 --output_dir ./outputs --encoder vitl
 ```
@@ -112,8 +112,8 @@ Options:
 - `--save_npz` (optional): Save the depth map in `npz` format.
 - `--save_exr` (optional): Save the depth map in `exr` format.
 
-### Inference a video using streaming mode (Experimental features)
-We implement an experimental streaming mode **without training**. In details, we save the hidden states of temporal attentions for each frames in the caches, and only send a single frame into our video depth model during inference by reusing these past hidden states in temporal attentions. We hack our pipeline to align the original inference setting in the offline mode. Due to the inevitable gap between training and testing, we observe a **performance drop** between the streaming model and the offline model (e.g. the `d1` of ScanNet drops from `0.926` to `0.836`). Finetuning the model in the streaming mode will greatly improve the performance. We leave it for future work.
+### Run inference on a video using streaming mode (Experimental features)
+We implement an experimental streaming mode **without training**. In details, we save the hidden states of temporal attentions for each frame in the caches, and only send a single frame into our video depth model during inference by reusing these past hidden states in temporal attentions. We hack our pipeline to align the original inference setting in the offline mode. Due to the inevitable gap between training and testing, we observe a **performance drop** between the streaming model and the offline model (e.g. the `d1` of ScanNet drops from `0.926` to `0.836`). Finetuning the model in the streaming mode will greatly improve the performance. We leave it for future work.
 
 To run the streaming model:
 ```bash
