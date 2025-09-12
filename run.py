@@ -82,10 +82,11 @@ if __name__ == '__main__':
     if args.metric:
         import open3d as o3d
 
+        x, y = np.meshgrid(np.arange(width), np.arange(height))
+        x = (x - width / 2) / args.focal_length_x
+        y = (y - height / 2) / args.focal_length_y
+
         for i, (color_image, depth) in enumerate(zip(frames, depths)):
-            x, y = np.meshgrid(np.arange(width), np.arange(height))
-            x = (x - width / 2) / args.focal_length_x
-            y = (y - height / 2) / args.focal_length_y
             z = np.array(depth)
             points = np.stack((np.multiply(x, z), np.multiply(y, z), z), axis=-1).reshape(-1, 3)
             colors = np.array(color_image).reshape(-1, 3) / 255.0
