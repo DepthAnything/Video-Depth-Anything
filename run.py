@@ -1,16 +1,16 @@
-# Copyright (2025) Bytedance Ltd. and/or its affiliates 
+# Copyright (2025) Bytedance Ltd. and/or its affiliates
 
-# Licensed under the Apache License, Version 2.0 (the "License"); 
-# you may not use this file except in compliance with the License. 
-# You may obtain a copy of the License at 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 
-#     http://www.apache.org/licenses/LICENSE-2.0 
+#     http://www.apache.org/licenses/LICENSE-2.0
 
-# Unless required by applicable law or agreed to in writing, software 
-# distributed under the License is distributed on an "AS IS" BASIS, 
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-# See the License for the specific language governing permissions and 
-# limitations under the License. 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 import argparse
 import numpy as np
 import os
@@ -28,6 +28,7 @@ if __name__ == '__main__':
     parser.add_argument('--encoder', type=str, default='vitl', choices=['vits', 'vitb', 'vitl'])
     parser.add_argument('--max_len', type=int, default=-1, help='maximum length of the input video, -1 means no limit')
     parser.add_argument('--target_fps', type=int, default=-1, help='target fps of the input video, -1 means the original fps')
+    parser.add_argument('--metric', action='store_true', help='use metric model')
     parser.add_argument('--fp32', action='store_true', help='model infer with torch.float32, default is torch.float16')
     parser.add_argument('--grayscale', action='store_true', help='do not apply colorful palette')
     parser.add_argument('--save_npz', action='store_true', help='save depths as npz')
@@ -42,14 +43,15 @@ if __name__ == '__main__':
         'vitb': {'encoder': 'vitb', 'features': 128, 'out_channels': [96, 192, 384, 768]},
         'vitl': {'encoder': 'vitl', 'features': 256, 'out_channels': [256, 512, 1024, 1024]},
     }
+    checkpoint_name = 'metric_video_depth_anything' if args.metric else 'video_depth_anything'
 
-    video_depth_anything = VideoDepthAnything(**model_configs[args.encoder])
-    video_depth_anything.load_state_dict(torch.load(f'./checkpoints/video_depth_anything_{args.encoder}.pth', map_location='cpu'), strict=True)
+    video_depth_anything = VideoDepthAnything(**model_configs[args.encoder], metric=args.metric)
+    video_depth_anything.load_state_dict(torch.load(f'./checkpoints/{checkpoint_name}_{args.encoder}.pth', map_location='cpu'), strict=True)
     video_depth_anything = video_depth_anything.to(DEVICE).eval()
 
     frames, target_fps = read_video_frames(args.input_video, args.max_len, args.target_fps, args.max_res)
     depths, fps = video_depth_anything.infer_video_depth(frames, target_fps, input_size=args.input_size, device=DEVICE, fp32=args.fp32)
-    
+
     video_name = os.path.basename(args.input_video)
     if not os.path.exists(args.output_dir):
         os.makedirs(args.output_dir)
@@ -76,7 +78,3 @@ if __name__ == '__main__':
             exr_file = OpenEXR.OutputFile(output_exr, header)
             exr_file.writePixels({"Z": depth.tobytes()})
             exr_file.close()
-
-    
-
-

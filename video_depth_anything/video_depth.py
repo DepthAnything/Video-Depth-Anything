@@ -41,7 +41,8 @@ class VideoDepthAnything(nn.Module):
         use_bn=False,
         use_clstoken=False,
         num_frames=32,
-        pe='ape'
+        pe='ape',
+        metric=False,
     ):
         super(VideoDepthAnything, self).__init__()
 
@@ -55,6 +56,7 @@ class VideoDepthAnything(nn.Module):
         self.pretrained = DINOv2(model_name=encoder)
 
         self.head = DPTHeadTemporal(self.pretrained.embed_dim, features, use_bn, out_channels=out_channels, use_clstoken=use_clstoken, num_frames=num_frames, pe=pe)
+        self.metric = metric
 
     def forward(self, x):
         B, T, C, H, W = x.shape
@@ -129,9 +131,13 @@ class VideoDepthAnything(nn.Module):
                 curr_align = []
                 for i in range(len(kf_align_list)):
                     curr_align.append(depth_list[frame_id+i])
-                scale, shift = compute_scale_and_shift(np.concatenate(curr_align),
-                                                       np.concatenate(ref_align),
-                                                       np.concatenate(np.ones_like(ref_align)==1))
+
+                if self.metric:
+                    scale, shift = 1.0, 0.0
+                else:
+                    scale, shift = compute_scale_and_shift(np.concatenate(curr_align),
+                                                           np.concatenate(ref_align),
+                                                           np.concatenate(np.ones_like(ref_align)==1))
 
                 pre_depth_list = depth_list_aligned[-INTERP_LEN:]
                 post_depth_list = depth_list[frame_id+align_len:frame_id+OVERLAP]
