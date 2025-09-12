@@ -24,7 +24,7 @@ This work presents **Video Depth Anything** based on [Depth Anything V2](https:/
 - **2025-08-28:** Release ViT-base model for relative depth and ViT-small/base models for video metric depth.
 - **2025-07-03:** 🚀🚀🚀 Release an experimental version of training-free **streaming video depth estimation**.
 - **2025-07-03:** Release our implementation of [training loss](https://github.com/DepthAnything/Video-Depth-Anything/tree/main/loss).
-- **2025-04-25:** 🌟🌟🌟 Release [metric depth model](https://github.com/DepthAnything/Video-Depth-Anything/tree/main/metric_depth) based on Video-Depth-Anything-Large.
+- **2025-04-25:** 🌟🌟🌟 Release metric depth model based on Video-Depth-Anything-Large.
 - **2025-04-05:** Our paper has been accepted for a **highlight** presentation at [CVPR 2025](https://cvpr.thecvf.com/) (13.5% of the accepted papers).
 - **2025-03-11:** Add full dataset inference and evaluation [scripts](https://github.com/DepthAnything/Video-Depth-Anything/tree/main/benchmark).
 - **2025-02-08:** Enable autocast inference. Support grayscale video, NPZ and EXR output formats.
@@ -32,6 +32,17 @@ This work presents **Video Depth Anything** based on [Depth Anything V2](https:/
 
 
 ## Release Notes
+- **2025-08-28:** 🚀🚀🚀 Metric depth models released
+
+| δ1 | MoGe-2-L | UniDepthV2-L | DepthPro | VDA-S-Metric | VDA-B-Metric | VDA-L-Metric |
+|:-|:-:|:-:|:-:|:-:|:-:|:-:|
+| KITTI | 0.415 | **0.982** | 0.822 | 0.877 | 0.887 | *0.910* |
+| NYUv2 | *0.967* | **0.989** | 0.953 | 0.850| 0.883 | 0.908 |
+
+| TAE | MoGe-2-L | UniDepthV2-L | DepthPro | VDA-S-Metric | VDA-B-Metric | VDA-L-Metric |
+|:-|:-:|:-:|:-:|:-:|:-:|:-:|
+| Scannet | 2.56 | 1.41 | 2.73 | 1.48 | *1.26* | **1.09** |
+
 - **2025-02-08:** 🚀🚀🚀 Inference speed and memory usage improvement
   <table>
     <thead>
@@ -67,7 +78,7 @@ This work presents **Video Depth Anything** based on [Depth Anything V2](https:/
   The Latency and GPU VRAM results are obtained on a single A100 GPU with input of shape 1 x 32 x 518 × 518.
 
 ## Pre-trained Models
-We provide **sevaral models** of varying scales for robust and consistent video depth estimation. For the usage of metric depth models, please refer to [Metric Depth](./metric_depth/README.md).
+We provide **sevaral models** of varying scales for robust and consistent video depth estimation.
 
 | Model | Params | Checkpoint |
 |:-|-:|:-:|
@@ -94,7 +105,7 @@ Download the checkpoints listed [here](#pre-trained-models) and put them under t
 bash get_weights.sh
 ```
 
-### Inference a video
+### Run inference on a video
 ```bash
 python3 run.py --input_video ./assets/example_videos/davis_rollercoaster.mp4 --output_dir ./outputs --encoder vitl
 ```
@@ -107,12 +118,13 @@ Options:
 - `--encoder` (optional): `vits` for Video-Depth-Anything-Small, `vitb` for Video-Depth-Anything-Base, `vitl` for Video-Depth-Anything-Large.
 - `--max_len` (optional): maximum length of the input video, `-1` means no limit
 - `--target_fps` (optional): target fps of the input video, `-1` means the original fps
+- `--metric` (optional): use metric depth models
 - `--fp32` (optional): Use `fp32` precision for inference. By default, we use `fp16`.
 - `--grayscale` (optional): Save the grayscale depth map, without applying color palette.
 - `--save_npz` (optional): Save the depth map in `npz` format.
 - `--save_exr` (optional): Save the depth map in `exr` format.
 
-### Inference a video using streaming mode (Experimental features)
+### Run inference on a video using streaming mode (Experimental features)
 We implement an experimental streaming mode **without training**. In details, we save the hidden states of temporal attentions for each frames in the caches, and only send a single frame into our video depth model during inference by reusing these past hidden states in temporal attentions. We hack our pipeline to align the original inference setting in the offline mode. Due to the inevitable gap between training and testing, we observe a **performance drop** between the streaming model and the offline model (e.g. the `d1` of ScanNet drops from `0.926` to `0.836`). Finetuning the model in the streaming mode will greatly improve the performance. We leave it for future work.
 
 To run the streaming model:
@@ -133,8 +145,12 @@ Options:
 ## Training Loss
 Our training loss is in `loss/` directory. Please see the `loss/test_loss.py` for usage.
 
-## Fine-tuning to a metric-depth video model
-Please refer to [Metric Depth](./metric_depth/README.md).
+## Video Metric Models (Experimental features)
+We experimentally fine-tune our pre-trained model on Virtual KITTI and IRS datasets for metric depth estimation.  Use the same scripts with `--metric` for metric inference.
+```bash
+python3 run.py --input_video ./assets/example_videos/davis_rollercoaster.mp4 --output_dir ./outputs --encoder vitl --metric
+python3 run_streaming.py --input_video ./assets/example_videos/davis_rollercoaster.mp4 --output_dir ./outputs_streaming --encoder vitl --metric
+```
 
 ## Benchmark
 Please refer to [Benchmark](./benchmark/README.md).
