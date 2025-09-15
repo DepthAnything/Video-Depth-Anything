@@ -33,6 +33,10 @@ if __name__ == '__main__':
     parser.add_argument('--grayscale', action='store_true', help='do not apply colorful palette')
     parser.add_argument('--save_npz', action='store_true', help='save depths as npz')
     parser.add_argument('--save_exr', action='store_true', help='save depths as exr')
+    parser.add_argument('--focal-length-x', default=470.4, type=float,
+                        help='Focal length along the x-axis.')
+    parser.add_argument('--focal-length-y', default=470.4, type=float,
+                        help='Focal length along the y-axis.')
 
     args = parser.parse_args()
 
@@ -53,8 +57,7 @@ if __name__ == '__main__':
     depths, fps = video_depth_anything.infer_video_depth(frames, target_fps, input_size=args.input_size, device=DEVICE, fp32=args.fp32)
 
     video_name = os.path.basename(args.input_video)
-    if not os.path.exists(args.output_dir):
-        os.makedirs(args.output_dir)
+    os.makedirs(args.output_dir, exist_ok=True)
 
     processed_video_path = os.path.join(args.output_dir, os.path.splitext(video_name)[0]+'_src.mp4')
     depth_vis_path = os.path.join(args.output_dir, os.path.splitext(video_name)[0]+'_vis.mp4')
@@ -82,6 +85,7 @@ if __name__ == '__main__':
     if args.metric:
         import open3d as o3d
 
+        width, height = depths[0].shape[-1], depths[0].shape[-2]
         x, y = np.meshgrid(np.arange(width), np.arange(height))
         x = (x - width / 2) / args.focal_length_x
         y = (y - height / 2) / args.focal_length_y
