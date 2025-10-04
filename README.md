@@ -165,7 +165,7 @@ If you find this project useful, please consider citing:
 ```bibtex
 @article{video_depth_anything,
   title={Video Depth Anything: Consistent Depth Estimation for Super-Long Videos},
-  author={Chen, Sili and Guo, Hengkai and Zhu, Shengnan and Zhang, Feihu and Huang, Zilong and Feng, Jiashi and Kang, Bingyi}
+  author={Chen, Sili and Guo, Hengkai and Zhu, Shengnan and Zhang, Feihu and Huang, Zilong and Feng, Jiashi and Kang, Bingyi},
   journal={arXiv:2501.12375},
   year={2025}
 }
