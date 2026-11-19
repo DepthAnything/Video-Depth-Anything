@@ -16,6 +16,11 @@ except:
 def ensure_even(value):
     return value if value % 2 == 0 else value + 1
 
+def video_sampling_rate(source_fps, target_fps):
+    stride = 1 if target_fps <= 0 else max(round(source_fps / target_fps), 1)
+    return stride, source_fps / stride
+
+
 def read_video_frames(video_path, process_length, target_fps=-1, max_res=-1):
     if DECORD_AVAILABLE:
         vid = VideoReader(video_path, ctx=cpu(0))
@@ -29,9 +34,7 @@ def read_video_frames(video_path, process_length, target_fps=-1, max_res=-1):
 
         vid = VideoReader(video_path, ctx=cpu(0), width=width, height=height)
 
-        fps = vid.get_avg_fps() if target_fps == -1 else target_fps
-        stride = round(vid.get_avg_fps() / fps)
-        stride = max(stride, 1)
+        stride, fps = video_sampling_rate(vid.get_avg_fps(), target_fps)
         frames_idx = list(range(0, len(vid), stride))
         if process_length != -1 and process_length < len(frames_idx):
             frames_idx = frames_idx[:process_length]
@@ -47,9 +50,7 @@ def read_video_frames(video_path, process_length, target_fps=-1, max_res=-1):
             height = round(original_height * scale)
             width = round(original_width * scale)
 
-        fps = original_fps if target_fps < 0 else target_fps
-
-        stride = max(round(original_fps / fps), 1)
+        stride, fps = video_sampling_rate(original_fps, target_fps)
 
         frames = []
         frame_count = 0

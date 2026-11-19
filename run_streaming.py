@@ -19,7 +19,7 @@ import time
 import cv2
 
 from video_depth_anything.video_depth_stream import VideoDepthAnything
-from utils.dc_utils import save_video
+from utils.dc_utils import save_video, video_sampling_rate
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Video Depth Anything')
@@ -60,9 +60,7 @@ if __name__ == '__main__':
         height = round(original_height * scale)
         width = round(original_width * scale)
 
-    fps = original_fps if args.target_fps < 0 else args.target_fps
-
-    stride = max(round(original_fps / fps), 1)
+    stride, fps = video_sampling_rate(original_fps, args.target_fps)
 
     depths = []
     frame_count = 0
